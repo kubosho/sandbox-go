@@ -20,7 +20,7 @@ func main() {
 	}
 	num, err := strconv.Atoi(os.Args[1])
 	if err != nil {
-		fmt.Fprint(os.Stderr, "Arguments must be integer")
+		fmt.Fprint(os.Stderr, "Arguments must be integer\n")
 		os.Exit(1)
 	}
 	fmt.Fprint(os.Stdout, fib(num))
