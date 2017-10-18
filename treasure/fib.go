@@ -23,5 +23,9 @@ func main() {
 		fmt.Fprint(os.Stderr, "Arguments must be integer\n")
 		os.Exit(1)
 	}
+	if num < 0 {
+		fmt.Fprint(os.Stderr, "Arguments must be positive integer\n")
+		os.Exit(1)
+	}
 	fmt.Fprint(os.Stdout, fib(num))
 }
