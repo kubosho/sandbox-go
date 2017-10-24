@@ -11,11 +11,31 @@ import (
 type Page struct {
 	Title       string
 	Description string
+	OgImage     string
+	OgTitle     string
 }
 
 func isDescription(attrs []html.Attribute) bool {
 	for _, attr := range attrs {
 		if attr.Key == "name" && attr.Val == "description" {
+			return true
+		}
+	}
+	return false
+}
+
+func isOgTitle(attrs []html.Attribute) bool {
+	for _, attr := range attrs {
+		if attr.Key == "property" && attr.Val == "og:title" {
+			return true
+		}
+	}
+	return false
+}
+
+func isOgImage(attrs []html.Attribute) bool {
+	for _, attr := range attrs {
+		if attr.Key == "property" && attr.Val == "og:image" {
 			return true
 		}
 	}
@@ -40,6 +60,8 @@ func Get(url string) (*Page, error) {
 	var f func(*html.Node)
 	var title string
 	var desc string
+	var ogImage string
+	var ogTitle string
 
 	f = func(node *html.Node) {
 		if node.Type == html.ElementNode && node.Data == "title" {
@@ -52,6 +74,18 @@ func Get(url string) (*Page, error) {
 					desc = attr.Val
 				}
 			}
+
+			if isOgTitle(node.Attr) {
+				for _, attr := range node.Attr {
+					ogTitle = attr.Val
+				}
+			}
+
+			if isOgImage(node.Attr) {
+				for _, attr := range node.Attr {
+					ogImage = attr.Val
+				}
+			}
 		}
 
 		for fc := node.FirstChild; fc != nil; fc = fc.NextSibling {
@@ -61,5 +95,10 @@ func Get(url string) (*Page, error) {
 
 	f(doc)
 
-	return &Page{Title: title, Description: desc}, nil
+	return &Page{
+		Title:       title,
+		Description: desc,
+		OgImage:     ogImage,
+		OgTitle:     ogTitle,
+	}, nil
 }

@@ -13,6 +13,8 @@ type Page struct {
 	URL         string `json:"url"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
+	OgImage     string `json:"ogImage"`
+	OgTitle     string `json:"ogTitle"`
 }
 
 const separator = ","
@@ -23,7 +25,13 @@ func fetchPageData(url string) (*Page, error) {
 		return nil, err
 	}
 
-	return &Page{URL: url, Title: content.Title, Description: content.Description}, nil
+	return &Page{
+		URL:         url,
+		Title:       content.Title,
+		Description: content.Description,
+		OgImage:     content.OgImage,
+		OgTitle:     content.OgTitle,
+	}, nil
 }
 
 func rootHandler(w http.ResponseWriter, r *http.Request) {
