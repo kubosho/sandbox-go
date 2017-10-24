@@ -10,6 +10,7 @@ import (
 )
 
 type Page struct {
+	URL         string `json:"url"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
 }
@@ -22,7 +23,7 @@ func fetchPageData(url string) (*Page, error) {
 		return nil, err
 	}
 
-	return &Page{Title: content.Title, Description: content.Description}, nil
+	return &Page{URL: url, Title: content.Title, Description: content.Description}, nil
 }
 
 func rootHandler(w http.ResponseWriter, r *http.Request) {
