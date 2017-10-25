@@ -1,25 +1,24 @@
 package stack
 
 type Stack struct {
-	data   []string
-	length int
-	limit  int
+	data  []string
+	limit int
 }
 
 func (s *Stack) Pop() string {
-	if s.length == 0 {
+	if len(s.data) == 0 {
 		return ""
 	}
-	s.length--
-	return s.data[s.length]
+
+	d := s.data[len(s.data)-1]
+	s.data = s.data[:len(s.data)-1]
+
+	return d
 }
 
 func (s *Stack) Push(str string) {
-	if s.length >= s.limit {
-		s.data = append(s.data, str)
+	if len(s.data) == s.limit {
 		s.data = s.data[1:]
-		return
 	}
 	s.data = append(s.data, str)
-	s.length++
 }
